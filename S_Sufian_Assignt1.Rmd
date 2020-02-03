@@ -1,0 +1,133 @@
+---
+title: "DAT 605 - HW1"
+author: "sufian"
+date: "1/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r, message=FALSE, warning=FALSE}
+
+library(matlib)
+library(MASS) 
+```
+
+## Prob Set 1
+ Prob (1)
+
+Calculate the dot product u.v where u = [0.5;0.5] and v = [3;−4]
+
+```{r }
+
+
+u <- c(0.5,0.5)
+v <- c(3,-4)
+
+sum(u*v)
+```
+
+Prob (2)
+
+What are the lengths of u and v
+
+```{r}
+#length of u
+sqrt(sum(u*u))
+
+#length of v
+sqrt(sum(v*v))
+```
+
+ Prob (3)
+
+What is the linear combination: 3u−2v?
+
+```{r}
+x <- 3*u - 2*v
+
+x
+```
+
+ Prob (4)
+
+ What is the angle between u and v
+
+
+```{r}
+
+
+den <- sqrt(sum(u*u))*sqrt(sum(v*v))
+
+theta <- acos(sum(u*v)/(sqrt(sum(u*u))*sqrt(sum(v*v))))
+
+theta
+
+```
+
+## Problem Set 2
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+- I found this snippet on-line and modify to solve Prob set 2:
+ I was able to convert this code to an iterative process to convert the coefficient matrix A into 
+ an Upper Triangular Form only using the Pivot & Multiply procedure from wk1mod2.pdf
+ 
+## However, I do not know how to create a generic code function.  Perhaps, you show us in class?
+
+attribution:
+http://stackoverflow.com/questions/16044377/how-to-do-gaussian-elimination-in-r-do-not-use-solve
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+```{r}
+
+A <- matrix(c(1,1,3,2,-1,5,-1,-2,4),byrow=T,nrow=3,ncol=3)
+b <- matrix(c(1,2,6),nrow=3,ncol=1)
+p <- nrow(A)
+(Umat <- cbind(A,b))
+#Pivot: The ﬁrst non-zero element in the row being evaluated
+Umat[1,] <- Umat[1,]/Umat[1,1]
+
+i <- 2
+while (i < p+1) {
+ j <- i
+ while (j < p+1) {
+  Umat[j, ] <- Umat[j, ] - Umat[i-1, ] * Umat[j, i-1]
+  j <- j+1
+ }
+ 
+ 
+# Check to see if 2nd and 3rd pivot of Augmented Matrix A is 1 or not
+# If not, make it to 1 by dividing by its own coeficient
+ while (Umat[i,i] == 0) {
+ Umat <- rbind(Umat[-i,],Umat[i,])#this checks if its indeed already zero, if so, row bind it together and move on
+ }
+ Umat[i,] <- Umat[i,]/Umat[i,i]# this makes it 1 by dividing its own coeficient
+ i <- i+1
+}
+
+#Making off-pivot coeficient to zero
+for (i in p:2){
+ for (j in i:2-1) {
+  Umat[j, ] <- Umat[j, ] - Umat[i, ] * Umat[j, i]
+ }
+}
+
+Umat
+
+
+
+
+```
+
+
