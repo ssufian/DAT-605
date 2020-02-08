@@ -1,0 +1,140 @@
+---
+title: "Dat 605 HW2 - LU Decomposition Exercise"
+author: "sufian"
+date: "2/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Problem set 1
+
+![](https://github.com/ssufian/DAT-605/blob/master/Problem%20Set%201%20-%20Multiplication%20Not%20Commutative.JPG?raw=true)
+
+
+```{r,message=FALSE, warning=FALSE}
+
+library(matlib)
+library(MASS)
+
+```
+
+- The special case where A$^{T}$A $=$ AA$^{T}$ thru an example (Identity Matrix) in R
+
+```{r}
+m <- matrix(c(1, 0, 0, 0,1,0,0,0,1), nrow = 3, ncol = 3, byrow=F)
+m
+
+m%*%t(m)
+
+t(m)%*%m
+```
+
+- But in general, The regular case of A$^{T}$A $!=$ AA$^{T}$
+
+```{r}
+A = matrix(c(1,2,3,1,1,1,2,0,1),nrow=3)
+A
+
+A%*%t(A)
+
+t(A)%*%A
+```
+
+## Problem Set 2
+
+- LU Decomposition Function
+
+```{r}
+LUDecomposition <- function(A, n){
+
+  U = A
+  L = diag(n)
+  p <- n
+ 
+# Check to see if 1st pivot is 1, if not make it so 
+if(A[1,1]> 0) {
+U[1,] <- A[1,]/A[1,1]
+
+} else {
+if(A[1,1] == 0) {
+U[1,] <- A[1,]+1
+} else {
+U[1,] <- A[1,]/A[1,1]
+}
+}
+ 
+# populating off centers of Upper & lower matrix   
+ i <- 2
+ j <- i
+ while (j < p+1) {
+   
+  L[j,i-1 ] <- U[j,i-1]  
+
+  U[j, ] <- U[i-1, ] * U[j, i-1] - U[j, ] 
+  j <- j+1
+ }
+ 
+ j <-p
+ i <-j
+ 
+ # Check to see if 2nd pivot is 1, if not make it so
+ 
+ if(U[i-1,i-1] == 1 ){
+   U[i-1,] <- U[i-1,]/U[i-1,i-1]
+   
+ } else if (U[i-1,i-1] >0){
+   U[i-1,] <- U[i-1,]/U[i-1,i-1]
+   
+ } else if (U[i-1,i-1] <0  ){
+   U[i-1,] <- 1*(U[i-1,]/U[i-1,i-1])
+   
+ } else 
+   U[i-1,] <- U[i-1,]/U[i-1,i-1]
+   
+
+ while (j < p+1) 
+  {
+  L[j,i-1] <- U[j,i-1] 
+
+  U[j, ] <- U[i-1, ] *U[j, i-1] - U[j, ] 
+  j<-j+1
+  }
+
+print("L Matrix: " )
+print(L)
+print("U Matrix: ")
+print(U)  
+print("To verify that A = LU:")
+Acheck <- L%*%U
+return (Acheck )
+  
+}
+
+```
+
+
+```{r }
+n<-3
+#A = matrix(c(2,-1,-2,-4,6,3,-4,-2,8),nrow=3,byrow=T)
+
+A = matrix(c(1,2,3,1,1,1,2,0,1),nrow=n)
+
+LUDecomposition(A, n)
+print("Original Matrix A")
+print(A)
+```
+
+## LU decomposition is Not Unique
+
+Observation:
+
+- I found the decomposed Lower & Upper Matrix as shown above
+
+- However, It seems that LU decomposition is Not Unique unless some kind of constraint/s are placed on it
+
+
+
