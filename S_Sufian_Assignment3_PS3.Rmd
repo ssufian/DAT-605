@@ -1,0 +1,97 @@
+---
+title: "Dat 605 HW3 - Eigenvalues & Eigenvectors"
+author: "sufian"
+date: "2/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r,message=FALSE, warning=FALSE}
+
+library(matlib)
+library(MASS)
+library(pracma)
+
+```
+
+## Prob 1
+
+
+- What is rank of matrix A, using rref R's built-in function
+
+https://www.rdocumentation.org/packages/pracma/versions/1.9.9/topics/rref
+
+```{r}
+
+A1 = matrix(c(1,2,3,4,-1,0,1,3,0,1,-2,1,5,4,-2,-3), nrow = 4, ncol = 4, byrow=T)
+
+A1
+
+
+rref(A1) 
+```
+
+Ans:
+
+- Since after row-reduction, we get an Identity 4x4 matrix (4 linearly independent columns of vectors or 4 non-zero pivots)
+- The rank of A1 is 4
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+- Given an mxn matrix where m > n, what is the:
+
+(a) max rank
+(b) min rank
+
+Ans:
+
+- For non-zero rectangular matrices, the rank has to be no greater than the smaller of the row or column dimension
+
+Therefore, max rank is n and the min rank is n
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+- What is rank of matrix B, using rref R's built-in function again to solve
+
+
+```{r}
+B = matrix(c(1,2,3,0,4,5,0,0,6), nrow = 3, ncol = 3, byrow=T)
+
+B
+
+
+rref(B) 
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+Ans:
+
+- Since after row-reduction, we get an Identity 3X3 matrix (3 linearly independent columns of vectors or 3 non-zero       pivots)
+- The rank of B is 3
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 2
+
+Compute Eigenvalues and Eigenvectors of matrix A:
+
+
+![Fig 1a: Eigenvalues](https://github.com/ssufian/DAT-605/blob/master/HW3_Prob%20Set2%20eigenvalues.JPG?raw=true)
+
+
+![Fig 1b: Eigenvectors:](https://github.com/ssufian/DAT-605/blob/master/HW3_Prob%20Set2%20eigenvectors.JPG?raw=true)
+
+
