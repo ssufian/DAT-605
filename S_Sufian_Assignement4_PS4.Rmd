@@ -1,0 +1,190 @@
+---
+title: "Dat 605 HW 4 - SVD Decomposition Exercise"
+author: "sufian"
+date: "2/13/2020"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Prob Set 1
+
+- SVD Decomposition Step by Step
+
+```{r message=FALSE, warning=FALSE}
+
+library(matlib)
+library(MASS)
+
+```
+
+## Setting up A mxn Matrix
+
+- X = AAT
+
+- Y = ATA
+
+```{r}
+A <- matrix(c(1, 2, 3, -1,0,4), nrow = 2, ncol = 3, byrow=T)
+
+A
+
+```
+
+
+```{r}
+
+X <- A%*%t(A) #AAT
+
+X
+
+Y <- t(A)%*%A #ATA
+
+Y
+```
+
+- Eigenvectors of ATA matrix
+
+
+```{r}
+Y.e <- eigen(Y) #eigen of ATA
+
+values.mat <-Y.e$values
+values.mat #this will show that the last eignevalue is virtually zero
+
+vector.mat <- Y.e$vectors #eignen vectors of ATA
+
+#vector.mat[,1:2] <- vector.mat[,1:2]*-1
+
+vector.moat <- vector.mat[,1:2]
+
+vector.moat
+
+```
+
+- Performing the same routine for AAT; X Matrix
+
+```{r}
+
+X.e <- eigen(X) #eigen of AAT
+
+uvalues.mat <- X.e$values #eigen values of AAT
+uvector.mat <- X.e$vectors #eigen vectors of AAT
+
+uvector.mat
+
+```
+
+- The singular values r are the square roots of the non-zero eigenvalues of the AAT and ATA matrices
+
+
+```{r}
+r <- sqrt(Y.e$values)
+
+r <- r*diag(length(r))[,1:2]
+
+r <-r[1:2,]
+
+r
+```
+
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+- The manual step by step process aligns with the output of the svd() function below. 
+
+- We can also show that the matrix A is indeed equal to the components resulting from singular value decomposition.
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+```{r}
+svd.matrix <- uvector.mat %*% r %*% t(vector.moat)
+svd.matrix # this results the same as the original A matrix we began with
+```
+
+## Confirmation with R built-in function below:
+
+- The singular value decomposition of the matrix is computed using the R svd() function
+
+```{r}
+A.svd <- svd(A)
+A.svd
+```
+
+## Prob Set 2
+
+- Inverse of a Matrix using R built-in cofactor functions
+
+```{r}
+
+
+myinverse <- function(A1,n){
+  
+# Pre-populate nxn matrix with zeros
+  nrow <- n
+  ncol <- n
+
+#create place-holder C matrix of zeros
+C <- matrix(0, nrow = n, ncol = n)
+  
+i <-1
+#j<-1
+while (i < n+1){
+ for (j in 1:n) {
+  C[i,j]<- cofactor(A1, i,j)
+ }
+  i<-i+1
+}
+#Matrix of Co-factors of original Matrix A
+C
+#transpose of Cofactor Matrix
+print("Cofactors of Matrix A :")
+Ctranspose <- t(C)
+
+print(Ctranspose)
+
+#Determinant of original Matrix A
+print("The Determinant of Matrix A :")
+Det_A1 <- det(A1)
+print(Det_A1)
+
+#Inverse of original Matrix A
+print("The Inverse of A is :")
+
+A_Inv <- Ctranspose/Det_A1
+print(A_Inv)
+
+print("To verify that AxA(inverse) = Identity :")
+I <- A1 %*% A_Inv
+
+return (I)  
+}
+
+```
+
+
+## Test the Function out; Driver Matrix A1
+
+```{r}
+
+n<-3
+
+A1 <- matrix(c(1,2,3,0,1,4,5,6,0),nrow=3,ncol=3, byrow=T)
+print("Original Matrix of A :")
+A1
+myinverse(A1,n)
+
+```
+
+
+
+
