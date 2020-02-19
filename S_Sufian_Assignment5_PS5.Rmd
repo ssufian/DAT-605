@@ -1,0 +1,209 @@
+---
+title: '"Dat 605 HW 5 - PROBABILITY AND RANDOM VARIABLES"'
+author: "sufian"
+date: "2/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## HW5 
+
+```{r , message=FALSE, warning=FALSE}
+
+library(matlib)
+library(MASS)
+require(plotrix)
+require(grid)
+library(ggplot2)
+require(ggthemes)
+
+```
+
+## 5a
+
+- Find probability of 
+
+ B+C < 1/2
+ 
+ B + C < 1/2 passes through the points (1/2, 0) and (0, 1/2)
+ 
+ Solving by geometry:
+ 
+ The probability is therefore the area under the line of b= 1/2 - C
+ 
+ans:
+
+- 1/2*1/2*1/2 = 1/8
+
+```{r}
+
+curve(0.5-x, from=0.0, to=0.5, , xlab="B", ylab="C",main = "B+C < 1/2")
+
+```
+
+## 5b
+
+B*C < 1/2
+
+ Using integration for the curve:
+ 
+  - $\left(\int_{0.5}^{1} (1/2b) \; db\right)$ 
+  
+But to also capture the area to the left of the curve, which is 1/2*1 = 0.5
+
+Therefore the Total area is: 0.5 + area under the curve (from the integral above):
+
+ans:
+
+-  Total Area = 0.5 + 0.346 => 0.8346
+
+   With the area under the hyperbola = 0.346, see graph below
+
+```{r}
+func2 <- function(x){
+  1/(2*x)
+}
+
+integrate(func2, 1/2,1)
+
+```
+```{r}
+#The area under the hyperbola curve is graphed below
+curve(1/(2*x) , from=0.5, to=1, , xlab="B", ylab="C",main = "B < 1/(2*C)")
+
+```
+```{r}
+#The total area of the integral and 1/2 of the square 
+blue<-rgb(0.8, 0.8, 1, alpha=0.25)
+clear<-rgb(1, 0, 0, alpha=0.0001)
+
+func1<-function(x) 0.5/x
+p <- ggplot(data = data.frame(x = 0), mapping = aes(x = x,fill='clear')) + 
+ stat_function(fun = func1) + xlim(0,1) + ylim(0,1)+ggtitle("B*C < 1/2")+ theme_economist()+
+
+  geom_label(aes(x = .7, y = .85, label = "Subtracted area"), 
+             hjust = 0, 
+             vjust = 0.5, 
+             colour = "blue", 
+             fill = "white", 
+             label.size = NA, 
+             family="Helvetica", 
+             size = 6)
+
+L1 <- geom_segment(aes(x=0,xend=0,y=0,yend=1))
+L2 <- geom_segment(aes(x=0,xend=0.5,y=1,yend=1))
+L3 <- geom_segment(aes(x=0,xend=1,y=0,yend=0))
+L4 <- geom_segment(aes(x=1,xend=1,y=0,yend=0.5))
+
+p + L1 + L2 + L3 + L4
+```
+
+## 5c
+
+ |B − C| < 1/2
+ 
+ 
+ans:
+
+|B-C| < 1/2 is the region between the lines C = B+1/2 and C = B-1/2.  These 2 regions intersect the unit square 
+
+Note that this is equivalent to B - 1/2 < C < x + 1/2.
+
+So, we need to subtract these 2 triangles from the unit square => 1 - 2 * (1/2 * 1/2 * 1/2) = 3/4
+
+```{r}
+
+func<-function(x) x-0.5
+func2<-function(x) x+0.5
+p <- ggplot(data = data.frame(x = 0), mapping = aes(x = x)) + 
+ stat_function(fun = func) + xlim(0,1) + ylim(0,1)+stat_function(fun = func2)+ggtitle("|B-C| < 1/2")+ theme_economist()+
+  geom_label(aes(x = 0.01, y = .86, label = "1st subtracted triangle"), 
+             hjust = 0, 
+             vjust = 0.5, 
+             colour = "blue", 
+             fill = "white", 
+             label.size = NA, 
+             family="Helvetica", 
+             size = 4)+
+  geom_label(aes(x = 0.67, y = 0.125, label = "2nd subtracted triangle"), 
+             hjust = 0, 
+             vjust = 0.5, 
+             colour = "blue", 
+             fill = "white", 
+             label.size = NA, 
+             family="Helvetica", 
+             size = 4)
+
+L1 <- geom_segment(aes(x=0,xend=0,y=0,yend=1))
+L2 <- geom_segment(aes(x=0,xend=1,y=1,yend=1))
+L3 <- geom_segment(aes(x=0,xend=1,y=0,yend=0))
+L4 <- geom_segment(aes(x=1,xend=1,y=0,yend=1))
+
+
+p+ L1 + L2 + L3 + L4
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## 5d
+
+P(max(B,C) <1/2)
+
+Is like saying max{B,C} < 1/2 is equivalent to:  B < 1/2 and C < 1/2
+
+P(B<=1/2)*P(C<=1/2)
+
+The area of Two squares (both red shaded and green shaded, see below) with sides of 1/2 is:
+
+=> 1/2 * 1/2 => 1/4
+
+```{r}
+
+plot(c(0, 2), c(0, 2), type= "n", xlab = "B", ylab = "C",main = "max{B,C} < 1/2",lwd = 15)
+rect(0, 0, 0.5,0.5 , density = 17, border = "darkred",lty =2, col='red')
+rect(0,0,0.5,.5,density = 12, border = "green",lty =4, col = 'green')
+rect(0, 0, 1,1 , density = 0, border = "blue")
+
+
+```
+
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## 5e
+
+Again, Solving by geometry:
+
+P(min(B,C) <1/2)
+
+Is like saying B < 1/2 or C < 1/2
+
+The area of Two squares with the red shaded one being a 1x1/2 and the green shaded on being 1/2x1/2:
+
+=> 1/2 + 1/4 => 3/4
+
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+
+
+```{r}
+plot(c(0, 2), c(0, 2), type= "n", xlab = "B", ylab = "C",main = "min{B,C} < 1/2",lwd = 10)
+rect(0, 0, .5,1 , density = 10, border = "red",lty =4, col ="red")
+rect(0.5,0,1,.5,density = 7, border = "darkgreen",lty =4,col="green")
+rect(0, 0, 1,1 , density = 0, border = "blue")
+
+```
+
+
+
+
