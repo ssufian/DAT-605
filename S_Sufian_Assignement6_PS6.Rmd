@@ -1,0 +1,308 @@
+---
+title: "Dat 605 HW 6 - PROBABILITY AND COMBINATORICS"
+author: "sufian"
+date: "2/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## HW 6
+
+
+```{r , message=FALSE, warning=FALSE}
+library(matlib)
+library(MASS)
+require(plotrix)
+require(grid)
+library(ggplot2)
+require(ggthemes)
+require(combinat)
+
+```
+
+## Prob 1
+
+```{r}
+
+red_marbles <- 54
+white_marbles <- 9
+blue_marbles <- 75
+
+Tot_marbles <- red_marbles+white_marbles+blue_marbles 
+
+Pred <- round(red_marbles/Tot_marbles,4)
+#probability of pulling red marble
+
+
+Pblue <- round(blue_marbles/Tot_marbles,4)
+#probability of pulling blue marble
+
+
+# P(red or blue) = P(red) + P(blue)
+round(Pred + Pblue, 4)
+```
+
+## Prob 2
+
+```{r}
+g <- 19
+r <- 20
+b <-24
+y <- 17
+
+tot <- g+r+b+y
+
+Pr <- round(r/tot,4)
+
+Pr
+
+```
+
+## Prob 3
+
+![](https://github.com/ssufian/DAT-605/blob/master/Prob3_conditional%20prob.JPG?raw=true)
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 4
+
+4. Going to Gym and Losing Weight
+Determine if the following events are independent. Going to the gym. Losing weight.
+
+
+A)Dependent
+B) Independent
+
+Ans: (A) Dependent
+
+- One event affects the other event
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 5
+
+C(n,k) = $\frac{n!}{(n-k)!k!}$ 
+
+Ctot = $\frac{8!}{(8-3)!3!}$ *$\frac{7!}{(7-3)!3!}$ *$\frac{3!}{(3-1)!1!}$ 
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+
+```{r}
+wraps <- (factorial(8)/(factorial(5)*factorial(3)))*(factorial(7)/(factorial(4)*factorial(3)))*(factorial(3)/(factorial(2)*factorial(1)))
+wraps
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 6
+
+Determine if the following events are independent. Jeff runs out of gas on the way to work.  Liz watches the evening news.  
+
+Ans:  B)Independent
+
+One event does NOT affect another event
+
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 7
+
+P(n,k) = $\frac{n!}{(n-k)!}$ 
+
+P(14,8) = $\frac{14!}{(14-8)!}$ 
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+
+```{r}
+#Permutation problem
+cabinet <- factorial(14)/factorial(6)
+cabinet
+
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 8
+
+|S| = $\binom{22}{4}$, All possible combo in the sample space
+
+|R| = $\binom{9}{0}$, Red sample space and its combo
+
+|O| = $\binom{4}{1}$, Orange sample space and its combo
+
+|G| = $\binom{9}{3}$, Greens sample space and its combo
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+```{r}
+choose(9,0)*choose(4,1)*choose(9,3)/choose(22,4)
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 9
+
+```{r}
+ factorial(11)/factorial(7)
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 10
+
+ans:
+
+- 33% of suscribers to a fitness magazine are 34 or younger.
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 11, step 1
+
+- Binomial Distribution 
+
+Generic Binomial formula:
+
+P(k heads and n-k tails) = $\binom{n}{k}$ * $p^{k}$*$(1-p)^{k}$
+
+whereby p(heads) = 0.5 and p(tail) = 1- 0.5 = 0.5
+
+P(Sucess = 3 heads) = $\binom{4}{3}$ * $0.5^{3}$*$(1-0.5)^{1}$
+
+
+$\ E$(x) = 0.25*$97 -  0.75*$30
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+
+```{r}
+# Prob of success
+ps <- 4*0.5^3*0.5^1
+
+
+#Prob of failure
+qf <- 1-ps
+
+#Expected value of the proposition
+
+E <- 0.25*97 -  0.75*30
+
+E
+
+
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 11, step 2
+
+
+N*$\ E$(x) = 559*$1.75, where N is no. of times of playing the game
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+```{r}
+Exp1 <- 559*1.75
+Exp1
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 12, step 1
+
+Following prob 11, P(Sucess = 4 heads or less) = $\binom{n}{k}$ * $p^{k}$*$(1-p)^{k}$
+
+whereby k goes from 0 to 4 while n = 9
+
+P(sucess) = 0.5 and P(failure) = 1-0.5 = 0.5
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+```{r}
+comb = function(n, x) {
+  factorial(n) / factorial(n-x) / factorial(x)
+}
+p <-0.5
+q <- p
+p0 <- comb(9, 0)*p^0*q^9
+
+p1 <- comb(9, 1)*p^1*q^8
+ 
+p2 <- comb(9, 2)*p^2*q^7
+ 
+p3 <- comb(9, 3)*p^3*q^6
+
+p4 <- comb(9, 4)*p^4*q^5
+
+#prob of sucess (winning!)
+ps <- p0+p1+p2+p3+p4
+ 
+pfail <- 1-ps # prob of losing
+
+
+#Expected value of the proposition
+
+E2 <- ps*23-pfail*26
+E2
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 12, step 2
+
+
+N∗E(X) = 994*(-$1.5)
+
+```{r}
+E3 <- 994*E2
+E3
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 13
+
+![](https://github.com/ssufian/DAT-605/blob/master/Prob%2013.JPG?raw=true)
+
+
