@@ -1,0 +1,146 @@
+---
+title: "Dat 605 - HW7 - Week 7, Imp. Distributions / EX / VARX"
+author: "sufian"
+date: "2/22/2020"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Types of Probability Distribution Exercise
+
+
+```{r, message=FALSE, warning=FALSE}
+library(matlib)
+library(MASS)
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 1
+
+
+Let Y = min(X1,X2,X3,X4....Xn)
+
+Also let F(y) be the CDF:
+
+F(y) = P(Y≤y)
+
+     = 1 - P(Y<y)
+     
+     = 1 - P(X1>y, X2>y, X3>y,...........Xn>y)
+     
+     = 1 - P(X1>y)*P(X2>y)*P(X3>y)....*P(Xn>y)
+     
+     = 1 - F(x1)*F(x2)*F(x3)*...........*F(xn)
+       
+Therefore, F(y) = 1 - [$\frac{1}{k}$*$\frac{1}{k}$*$\frac{1}{k}$....$\frac{1}{k^n}$]
+
+or F(y) = 1 - $\frac{1}{k^n}$ is the distribution for integer 1 to k
+
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+
+## Prob 2a
+
+- Geometric Distribution formula:
+
+Pr(X=k) = $(1-p)^{k}$ p
+
+for k = 0, 1, 2, 3, 4.....
+
+In our case, p is the first time machine breaks down =>1/10
+Therefore In this case, the success of the event signifies the failure of a machine
+
+```{r}
+p <- 1/10
+q <- 1-p
+
+Pr8 <- q^8 # k= 8 because we are looking for not failing in the frist 8 yrs
+print("Prob will fail after 8 yrs")
+print(round(Pr8,7))
+print("Expected value :")
+print(E <- 1/p)
+print("Std Dev :")
+print(stddev<-sqrt((1-p)/p^2))
+```
+## Prob 2b
+
+- Exponential Distribution formula:
+
+f(X=k) = exp$\lambda$(-x) for x >= 0 and is zero for x < 0
+
+
+```{r}
+lambda <- 1/10
+x <-8 #after 8 years 
+
+fx <- exp(-lambda*x) # for x >= 8 years
+print('Prob will fail after 8 yrs')
+print(fx)
+
+print("Expected value :")
+print(E<-1/lambda)
+
+print("Std Dev :")
+print(E<-sqrt(1/(lambda^2)))
+```
+
+## Prob 2c
+
+- Binomial Distribution formula:
+
+Pr(X=k) = $\binom{n}{k}$$p^{k}$$(1-p)^{n-k}$  for k = 0,1,2...
+
+whereby, $\binom{n}{k}$ = $\frac{n!}{(n-k)!k!}$ 
+
+```{r}
+n <-8 # The numuber of years where there's no failures
+k <-0 # Here K is the number of failure occurances (or zero sucesses)
+p <-1/10 # Probability of failing in 10 years
+
+
+Prbinomial <- choose(n,k)*p^k*(1-p)^(n-k)
+print('Prob will fail after 8 yrs')
+print(Prbinomial)
+
+Ebinomial <- n*p
+Varbinomial <- n*p*(1-p)
+print("Expected Value :")
+print(Ebinomial)
+
+print("Std. Dev :")
+print(sqrt(Varbinomial))
+
+```
+
+## Prob 2d
+
+- Poisson Distribution formula:
+
+Pr(X=k) =  $\lambda$exp(-$\lambda$)/k!  for k = 0,1,2...to infinity
+
+```{r}
+lambdap <- .8 #here avg rate of "success" = rate of failures in 8 years was scaled from 1 out of 10 years
+k <- 0 #zero "success" =  zero "machine failures"
+Prpoission <- ((lambdap^k)*exp(-lambdap))/factorial(k)
+print('Prob will fail after 8 yrs')
+print(Prpoission)
+
+Epoission <- lambdap
+print("Expected Value :")
+print(Epoission)
+Varpoission <- lambdap
+print("Std. Dev :")
+print(sqrt(Varpoission))
+```
+
