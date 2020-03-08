@@ -1,0 +1,59 @@
+---
+title: "Dat 605 - HW8 - Week 8, Continous  Distributions "
+author: "sufian"
+date: "3/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Prob 11 Page 303 from "Intro to Probability Book"
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+Theorem tells us that If Xi ∼ exponential(λi), for i = 1, 2, . . . , n, and X1, X2, . . . , Xn are mutually
+independent random variables, then min{X1, X2, . . . , Xn} ∼ exponential ($\sum_{x = 1}^{n} λi$)
+
+E[Xi]=1/λi=1000, so λi=1/1000. Then minXi∼ Exp(λ), with λ=λ1+...+λ100=100/1000=1/10.
+
+E[minXi] = 1/λ = 1/1/10 = 10.  
+
+ans:
+
+Therefore, expected time for bulb to burn out = 10 hours
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 14 Page 303 from "Intro to Probability Book"
+
+X1,X2 are independant random variables with exponential density and λ parameters
+
+find Z = X - Y, in our case, we let Y = X2 and X = X1, see below:
+
+
+![](https://github.com/ssufian/DAT-605/blob/master/problem%2014%20page%20303.jpg?raw=true)
+
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+## Prob 1 Page 320-321 from "Intro to Probability Book"
+
+![](https://github.com/ssufian/DAT-605/blob/master/PROB%201%20PAGE%20320-321.jpg?raw=true)
+
+------------------------------------------------------------------------------------------------------------------
+
+\clearpage
+
+
+
+
+
+
